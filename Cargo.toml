@@ -1,0 +1,37 @@
+[package]
+name = "chartmaker"
+version = "1.0.0"
+edition = "2021"
+authors = ["Brian A. Manlove"]
+description = "Generate FAA Chart Maps From Digital Images"
+
+[dependencies]
+# Async Runtime & Concurrency
+tokio = { version = "1.40", features = ["full"] }
+tokio-util = { version = "0.7", features = ["full"] }
+futures-util = "0.3"
+
+# Web Server & WebSockets
+axum = { version = "0.7", features = ["ws"] }
+tower = { version = "0.5", features = ["util"] }
+tower-http = { version = "0.6", features = ["fs", "cors", "trace"] }
+tower-cookies = "0.10"
+
+# Serialization & Configuration
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+serde_yaml = "0.9"
+
+# Date & Time
+chrono = { version = "0.4", features = ["serde"] }
+
+# SQLite for MBTILES metadata
+rusqlite = { version = "0.32", features = ["bundled"] }
+
+# Base64 for Basic Auth
+base64 = "0.22"
+
+# Utilities & Error Handling
+anyhow = "1.0"
+thiserror = "1.0"
+tracing = "0.1"

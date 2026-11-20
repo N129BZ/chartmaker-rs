@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <title>Chartmaker Remote Control</title>
+    <link rel="icon" type="image/x-icon" href="/img/favicon.png" />
+    <link rel="stylesheet" href="./css/style.css">
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/elm-pep.js"></script>
+</head>
+
+<body>
+    <div class="application" id="application">
+        <div class="header"><br>Chartmaker<br>Aviation Chart Database Generator<br>
+            <span id="connectionStatus" class="connectionStatus status-connecting">● Connecting...</span><br><br>
+        </div>
+        <div class="addItemsMenu" id="addItemsMenu">
+            <div class="commandMenu" id="commandMenu"><b><label for="txtCommand">Chart Processing Options:</label></b><br>
+                <button class="undobutton" id="btnUndoCommand" aria-label="Undo command selection" title="Undo command selection"><svg class="udimage" width="24px" height="24px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none"><path stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 9v5h5m11 2c-.497-4.5-3.367-8-8-8-2.73 0-5.929 2.268-7.294 5.5"/></svg></button>
+                <select class="listitem" id="txtCommand">
+                    <option value="" disabled selected>-- Select an option --</option>
+                </select>
+            </div>
+            <div class="chartMenu" id="chartMenu"><b><br><label for="txtChart">Current Charts:</label></b><br>
+                <button class="undobutton" id="btnUndoChart" aria-label="Undo chart selection" title="Undo chart selection"><svg class="udimage" width="24px" height="24px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none"><path stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 9v5h5m11 2c-.497-4.5-3.367-8-8-8-2.73 0-5.929 2.268-7.294 5.5"/></svg></button>
+                <select class="listitem" id="txtChart" disabled>
+                    <option value="" disabled selected>-- Select chart --</option>
+                </select>
+            </div><br>
+            <button id="btnAddCommand" class="btnAddCommand" disabled>Add Chart</button>
+            <div class="spacer"></div>
+        </div>
+        <br>
+        <div class="processInformation" id="processInformation">Confirmed chart processing entries:</div>
+        <div class="confwindow" id="confwindow">
+            <table class="commandtable" id="commandtable"><tbody id="commandbody"></tbody></table>
+        </div>
+        <div class="buttongroup">
+            <button id="btnReset" class="btnReset">Reset</button>
+            <button id="btnRemove" class="btnRemove">Remove Last Entry</button>
+            <button id="btnSelectAll" class="btnSelectAll">Select All</button>
+            <button id="btnUnselectAll" class="btnUnselectAll">Unselect All</button>
+            <button id="btnProcessCharts" class="btnProcessCharts">Process Charts</button>
+            <button id="btnCancel" class="btnCancel" style="display: none;">Cancel Job</button>
+            <button id="btnDownload" class="btnDownload">Download Checked Items</button>
+        </div>
+        <br> 
+        <div class="downloadExisting" id="downloadExisting">
+            <label class="largeLabel" for="checkForExisting">See list of currently available databases for downloading?</label>
+            <input type="checkbox" class="blueInput" id="checkForExisting">
+        </div>
+        <script type="module" src="./js/remote.js"></script>
+    </div>
+</body>
+</html>

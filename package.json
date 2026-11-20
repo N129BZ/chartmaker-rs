@@ -1,0 +1,41 @@
+{
+  "name": "chartmaker",
+  "version": "1.0.0",
+  "description": "Generate FAA Chart Maps From Digital Images",
+  "main": "make.js",
+  "type": "module",
+  "prodscripts": {
+    "start": "vite",
+    "build": "vite build",
+    "serve": "vite preview"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "build-client": "vite build",
+    "preview": "vite preview",
+    "start": "node make.js",
+    "start:web": "WEBSERVER=true node make.js",
+    "start:cli": "WEBSERVER=false node make.js",
+    "rust:build": "cargo build --release",
+    "rust:web": "WEBSERVER=true cargo run --release",
+    "rust:cli": "WEBSERVER=false cargo run --release",
+    "rust:test": "cargo test"
+  },
+  "dependencies": {
+    "child_process": "^1.0.2",
+    "express": "^5.1.0",
+    "express-basic-auth": "^1.2.1",
+    "fs": "0.0.1-security",
+    "http": "^0.0.1-security",
+    "js-yaml": "^5.5.0",
+    "path": "^0.12.7",
+    "readline-sync": "^1.4.10",
+    "ws": "^8.18.2"
+  },
+  "author": "Brian A. Manlove",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "vite": "^8.3.8"
+  }
+}
