@@ -46,16 +46,32 @@ pub async fn start_queue_worker(state: AppState) {
                 }
 
                 let cmd_idx: i32 = item.command.parse().unwrap_or(-1);
-                let opt_idx: usize = item.chart.parse().unwrap_or(999);
 
                 let (chart_name, db_filename, maybe_ctx) = match cmd_idx {
                     0 => {
+                        let opt_idx: usize = item.chart.parse().unwrap_or_else(|_| {
+                            state
+                                .config
+                                .areachartlist
+                                .iter()
+                                .position(|c| {
+                                    c.eq_ignore_ascii_case(&item.chart)
+                                        || c.eq_ignore_ascii_case(&item.chartname)
+                                })
+                                .unwrap_or(999)
+                        });
                         let name = state
                             .config
                             .areachartlist
                             .get(opt_idx)
                             .cloned()
-                            .unwrap_or_else(|| "Area".to_string());
+                            .unwrap_or_else(|| {
+                                if !item.chartname.is_empty() {
+                                    item.chartname.clone()
+                                } else {
+                                    "Area".to_string()
+                                }
+                            });
                         let db = format!("{}.mbtiles", name.to_lowercase().replace(' ', "_"));
                         let ctx = create_area_chart_context(
                             opt_idx,
@@ -66,10 +82,30 @@ pub async fn start_queue_worker(state: AppState) {
                         (name, db, ctx)
                     }
                     1 => {
+                        let opt_idx: usize = item.chart.parse().unwrap_or_else(|_| {
+                            state
+                                .config
+                                .fullchartlist
+                                .iter()
+                                .position(|c| {
+                                    c[0].eq_ignore_ascii_case(&item.chart)
+                                        || c[0].eq_ignore_ascii_case(&item.chartname)
+                                        || (c.len() > 2
+                                            && (c[2].eq_ignore_ascii_case(&item.chart)
+                                                || c[2].eq_ignore_ascii_case(&item.chartname)))
+                                })
+                                .unwrap_or(999)
+                        });
                         let entry = state.config.fullchartlist.get(opt_idx);
                         let name = entry
                             .map(|e| e[2].replace('_', " "))
-                            .unwrap_or_else(|| "Full".to_string());
+                            .unwrap_or_else(|| {
+                                if !item.chartname.is_empty() {
+                                    item.chartname.clone()
+                                } else {
+                                    "Full".to_string()
+                                }
+                            });
                         let db = format!("{}.mbtiles", name.to_lowercase().replace(' ', "_"));
                         let ctx = create_full_chart_context(
                             opt_idx,

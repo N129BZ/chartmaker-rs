@@ -1,0 +1,119 @@
+configuration:
+  ########################################################
+  # Download URL Templates
+  ########################################################
+  attribution: "Aviation charts <a href='https://github.com/n129bz/chartmaker'>github.com/n129bz/chartmaker</a>"
+  vfrdownloadtemplate: "https://aeronav.faa.gov/visual/<chartdate>/All_Files/<charttype>.zip"
+  vfrindividualtemplate: "https://aeronav.faa.gov/visual/<chartdate>/sectional-files/<charttype>.zip"
+  ifrdownloadtemplate: "https://aeronav.faa.gov/enroute/<chartdate>/<charttype>.zip"
+  usvfrwallplanningtemplate: "https://aeronav.faa.gov/visual/<chartdate>/Planning/US_WallPlan.zip"
+
+  ########################################################
+  # Work area settings
+  ######################################################## 
+  renameworkarea: false
+  logtofile: false
+  cleanprocessfolders: true
+
+  ########################################################
+  # Image proccessing and output settings
+  ########################################################
+  tileimagequality: 80
+  outputgrayscale: false
+  debug: false
+  timezone: "America/Chicago"
+  
+  ########################################################
+  # Web server settings
+  ########################################################
+  httpport: 8500
+  pinginterval: 30000
+  useauthentication: false
+  downloadzipfilename: "Charts.zip"
+ 
+  #######################################################
+  # Format: ["Filename", "Chart type", "Display name"]
+  # NOTE: DO NOT REMOVE UNDERSCORES! The application
+  # will not properly process filenames with spaces and 
+  # replaces underscores with spaces for display names.
+  #######################################################
+  fullchartlist:
+    - ["Sectional", "vfr", "Sectional"]
+    - ["Caribbean", "vfr", "Caribbean"]
+    - ["Grand_Canyon", "vfr", "Grand_Canyon"]
+    - ["Terminal", "vfr", "Terminal"]
+    - ["Helicopter", "vfr", "Helicopter"]
+    - ["DDECUS", "ifr", "Enroute_Low"]
+    - ["DDECUS", "ifr", "Enroute_High"]
+
+  areachartlist:
+    - Albuquerque
+    - Anchorage
+    - Atlanta
+    - Bethel
+    - Billings
+    - Brownsville
+    - Cape_Lisburne
+    - Charlotte
+    - Cheyenne
+    - Chicago
+    - Cincinnati
+    - Cold_Bay
+    - Dallas-Ft_Worth
+    - Dawson
+    - Denver
+    - Detroit
+    - Dutch_Harbor
+    - El_Paso
+    - Fairbanks
+    - Great_Falls
+    - Green_Bay
+    - Halifax
+    - Hawaiian_Islands
+    - Houston
+    - Jacksonville
+    - Juneau
+    - Kansas_City
+    - Ketchikan
+    - Klamath_Falls
+    - Kodiak
+    - Lake_Huron
+    - Las_Vegas
+    - Los_Angeles
+    - McGrath
+    - Memphis
+    - Miami
+    - Montreal
+    - New_Orleans
+    - New_York
+    - Nome
+    - Omaha
+    - Phoenix
+    - Point_Barrow
+    - Salt_Lake_City
+    - San_Antonio
+    - San_Francisco
+    - Seattle
+    - Seward
+    - St_Louis
+    - Twin_Cities
+    - Washington
+    - Western_Aleutian_Islands
+    - Wichita
+
+  #######################################################
+  # Options: ["baselayer", "overlay"]
+  #######################################################
+  layertypeindex: 1
+  layertypes:
+    - baselayer
+    - overlay
+  
+  #######################################################
+  # Options: ["png", "jpeg", "webp"]
+  #######################################################
+  tiledriverindex: 2
+  tiledrivers:
+    - png
+    - jpeg
+    - webp

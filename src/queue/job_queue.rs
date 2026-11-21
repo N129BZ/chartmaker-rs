@@ -5,10 +5,28 @@ use std::sync::Arc;
 use tokio::sync::Mutex;
 use tokio_util::sync::CancellationToken;
 
+fn deserialize_flexible_string<'de, D>(deserializer: D) -> Result<String, D::Error>
+where
+    D: serde::Deserializer<'de>,
+{
+    let val = serde_json::Value::deserialize(deserializer)?;
+    match val {
+        serde_json::Value::String(s) => Ok(s),
+        serde_json::Value::Number(n) => Ok(n.to_string()),
+        serde_json::Value::Bool(b) => Ok(b.to_string()),
+        serde_json::Value::Null => Ok(String::new()),
+        _ => Err(serde::de::Error::custom("expected string or number")),
+    }
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CommandItem {
+    #[serde(deserialize_with = "deserialize_flexible_string", default)]
     pub command: String,
+    #[serde(deserialize_with = "deserialize_flexible_string", default)]
     pub chart: String,
+    #[serde(default)]
+    pub rowindex: Option<i32>,
     #[serde(default)]
     pub chartname: String,
 }
@@ -203,3 +221,68 @@ impl JobQueue {
 }
 
 pub type SharedJobQueue = Arc<Mutex<JobQueue>>;
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_deserialize_command_item_with_numbers() {
+        let json_data = r#"{
+            "command": 0,
+            "chart": 1,
+            "rowindex": 1,
+            "chartname": "Albuquerque"
+        }"#;
+        let item: CommandItem = serde_json::from_str(json_data).expect("Should deserialize numbers");
+        assert_eq!(item.command, "0");
+        assert_eq!(item.chart, "1");
+        assert_eq!(item.rowindex, Some(1));
+        assert_eq!(item.chartname, "Albuquerque");
+    }
+
+    #[test]
+    fn test_deserialize_command_item_with_strings() {
+        let json_data = r#"{
+            "command": "0",
+            "chart": "1",
+            "chartname": "Albuquerque"
+        }"#;
+        let item: CommandItem = serde_json::from_str(json_data).expect("Should deserialize strings");
+        assert_eq!(item.command, "0");
+        assert_eq!(item.chart, "1");
+        assert_eq!(item.rowindex, None);
+        assert_eq!(item.chartname, "Albuquerque");
+    }
+
+    #[test]
+    fn test_deserialize_command_package_payload() {
+        let json_data = r#"{
+            "type": "commandpackage",
+            "css": [],
+            "payload": "",
+            "rowindex": -1,
+            "completed": false,
+            "items": [],
+            "commandlist": [
+                {
+                    "command": 0,
+                    "chart": 0,
+                    "rowindex": 1,
+                    "chartname": "Albuquerque"
+                }
+            ],
+            "filename": "",
+            "getexisting": false,
+            "dbfilename": "",
+            "uid": "1732140000000-12345"
+        }"#;
+        let req: crate::server::handlers::MakeRequest =
+            serde_json::from_str(json_data).expect("Should deserialize full frontend payload");
+        let list = req.commandlist.expect("commandlist present");
+        assert_eq!(list.len(), 1);
+        assert_eq!(list[0].command, "0");
+        assert_eq!(list[0].chart, "0");
+        assert_eq!(list[0].chartname, "Albuquerque");
+    }
+}

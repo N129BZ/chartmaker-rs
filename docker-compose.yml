@@ -1,0 +1,15 @@
+services:
+  chartmaker:
+    build: .
+    image: chartmaker-rs:latest
+    container_name: chartmaker
+    restart: unless-stopped
+    ports:
+      - "8500:8500"
+    volumes:
+      - ./config:/chartmaker/config
+      - ./mbtiles:/chartmaker/mbtiles
+      - ./chartcache:/chartmaker/chartcache
+    environment:
+      - WEBSERVER=true
+      - DOCKER=true
